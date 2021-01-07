@@ -1,0 +1,13 @@
+
+
+
+spring.datasource:
+  url: baidu.com
+  username: cai
+  password: pei
+
+eia:
+  url: baidu.com
+
+
+

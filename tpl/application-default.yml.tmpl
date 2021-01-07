@@ -1,0 +1,13 @@
+{{ $namespace := printf "common,application%s" (env "APP_ENV") }}
+{{ with apollo "apollo-demo" $namespace }}
+
+spring.datasource:
+  url: {{ .Data.horus_db_url }}
+  username: {{ .Data.horus_db_username }}
+  password: {{ .Data.horus_db_password }}
+
+eia:
+  url: {{ .Data.eia_url }}
+
+
+{{ end }}
