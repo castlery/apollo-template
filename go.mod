@@ -1,4 +1,4 @@
-module apollo-go
+module apollo-template
 
 go 1.15
 
