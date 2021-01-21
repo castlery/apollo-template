@@ -125,3 +125,12 @@ c. 修改模板
 ```golang
 {{ with apollo "appId" (env "APP_ENV") }}
 ```
+
+## yaml 类型配置的支持
+
+如果在apollo 上创建了一个namespace ,名字为dev,类型为 yaml.则在client需要将namespace写成dev.yaml，如下所示：
+
+```golang
+{{ with apollo "appId" "dev.yaml" }}
+```
+
