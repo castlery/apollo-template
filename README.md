@@ -94,7 +94,7 @@ RUN curl -o /run/consul-template.zip -fSL "https://releases.hashicorp.com/consul
 ```
 替换成
 ```shell script
-RUN curl -o /run/apollo-template.tar.gz -fSL "https://github.com/castlery/apollo-template/releases/download/0.0.2/apollo-template_0.0.2_linux_amd64.tar.gz" \
+RUN curl -o /run/apollo-template.tar.gz -fSL "https://github.com/castlery/apollo-template/releases/download/0.0.2/apollo-template_0.0.3_linux_amd64.tar.gz" \
     && tar -zxvf /run/apollo-template.tar.gz --directory /usr/local/bin/ \
     && rm /run/apollo-template.tar.gz
 ```
