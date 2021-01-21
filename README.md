@@ -31,12 +31,9 @@ appId 等价于 project name，namespace 等价于 部署环境
 {{ with apollo "appId" $namespace }}
 
 spring.datasource:
-  url: {{ .Data.horus_db_url }}
-  username: {{ .Data.horus_db_username }}
-  password: {{ .Data.horus_db_password }}
-eia:
-  url: {{ .Data.eia_url }}
-
+  url: {{ .Data.url }}
+  username: {{ .Data.db_username }}
+  password: {{ .Data.db_password }}
 {{ end }}
 ```
 
@@ -46,14 +43,8 @@ eia:
 
 ```yaml
 template {
-  source      = "/Users/caipeijun/go/src/apollo-go/tpl/application-default.yml.tmpl"
-  destination = "/Users/caipeijun/go/src/apollo-go/tpl/application-default.yml"
-  error_on_missing_key = true
-}
-
-template {
-  source      = "/Users/caipeijun/go/src/apollo-go/tpl/sentry.properties.tmpl"
-  destination = "/Users/caipeijun/go/src/apollo-go/tpl/sentry.properties"
+  source      = "application-default.yml.tmpl"
+  destination = "application-default.yml"
   error_on_missing_key = true
 }
 
