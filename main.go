@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/philchia/agollo/v4"
+	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
 	"os"
@@ -19,17 +20,15 @@ func main() {
 	var configPath string
 	var apollo string
 	flag.StringVar(&configPath, "config", "config.hcl", "配置文件地址，默认在当前目录下找config.hcl")
-	if flag.Lookup(apollo)!=nil {
-		flag.StringVar(&apollo, "apollo", "", "apollo config service 的地址")
-	}
+	flag.StringVar(&apollo, "apollo", "", "apollo config service 的地址")
 	flag.Parse()
 	if strings.EqualFold("", apollo) {
 		apolloAddress = os.Getenv("APOLLO_CONFIG_SERVICE_ADDRESS")
 		if strings.EqualFold("", apolloAddress) {
 			log.Fatal("apollo address must be set")
+		} else {
+			apollo = apolloAddress
 		}
-	} else {
-		apolloAddress = apollo
 	}
 
 	// load templateArr config
@@ -43,7 +42,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		if templateConfig.MissKeyError{
+		if templateConfig.MissKeyError {
 			t.Option("missingkey=error")
 		}
 		f, err := os.Create(templateConfig.Destination)
@@ -55,7 +54,7 @@ func main() {
 	}
 }
 
-func loadConfigFromApollo(app string,cluster string, namespaces string) map[string]interface{} {
+func loadConfigFromApollo(app string, cluster string, namespaces string) map[string]interface{} {
 	namespaceArr := strings.Split(namespaces, ",")
 	log.Println("connection to apollo: ", apolloAddress)
 	curPath, _ := os.Getwd()
@@ -74,12 +73,19 @@ func loadConfigFromApollo(app string,cluster string, namespaces string) map[stri
 	})
 	configMap := map[string]interface{}{}
 	for _, ns := range namespaceArr {
-		content := agollo.GetPropertiesContent(agollo.WithNamespace(ns))
-		items := strings.Split(content, "\n")
-		for _, item := range items {
-			if "" != item {
-				arr := strings.Split(item, "=")
-				configMap[arr[0]] = arr[1]
+		if strings.HasSuffix(ns, ".yaml") {
+			// yaml parse
+			content := agollo.GetString("content", agollo.WithNamespace(ns))
+			yaml.Unmarshal([]byte(content), configMap)
+		} else {
+			// properties parse
+			content := agollo.GetPropertiesContent(agollo.WithNamespace(ns))
+			items := strings.Split(content, "\n")
+			for _, item := range items {
+				if "" != item {
+					arr := strings.Split(item, "=")
+					configMap[arr[0]] = arr[1]
+				}
 			}
 		}
 	}
