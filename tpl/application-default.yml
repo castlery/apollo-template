@@ -1,13 +1,70 @@
 
 
 
-spring.datasource:
-  url: baidu.com
-  username: cai
-  password: pei
+spring:
+  datasource:
+    url: jdbc:postgresql://oms-test.ch3fibrmi8ky.ap-southeast-1.rds.amazonaws.com:5432/oms_dev
+    driver-class-name: org.postgresql.Driver
+    username: oms
+    password: vae8thaW
+  mail:
+    username: zhiwei@castlery.com
+    password: UefuKQ2dBE576kEOWqJM2g
+    host: smtp.mandrillapp.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          timeout: 3000
+          connectiontimeout: 5000
+          writetimeout: 5000
+  kafka:
+    bootstrap-servers: kafka-dev-kafka-bootstrap.kafka-dev.svc.cluster.local:9092
+    producer:
+      acks: all
+      retries: 3
 
-eia:
-  url: baidu.com
+leadtime:
+  cal:
+    datasource:
+      us: true
+      sg: true
+      sf: true
+      au: false
 
+xxl:
+  job:
+    admin:
+      addresses: http://xxl-job-admin-dev
+    executor:
+      appname: ${spring.application.name}
+    register:
+      author: Castlery
+      alarmEmail: team.tech@castlery.com
+solidus:
+  url: https://knight-dev.castlery.co
+  token: 6db912f49f278e757f22d4ddf68544547fc0063a2dc5e9e1
 
+spring.redis:
+  database: 13
+  host: ap-s-cache-honestant.nqwqun.0001.apse1.cache.amazonaws.com
+
+blackout:
+  periods:
+  
+    
+      - location: us-la-stock
+        startDate: 2020-08-25
+        endDate: 2020-09-14
+    
+      - location: us-ny-stock
+        startDate: 2020-08-25
+        endDate: 2020-09-14
+    
+  
+
+inventory:
+  report:
+    clean:
+      day: 14
 

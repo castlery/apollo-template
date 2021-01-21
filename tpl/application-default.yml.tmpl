@@ -1,13 +1,66 @@
-{{ $namespace := printf "common,application%s" (env "APP_ENV") }}
-{{ with apollo "apollo-demo" $namespace }}
+{{ $namespace := printf "%s.yaml" (env "APP_ENV") }}
+{{ with apollo "zeep" "dev.yaml" }}
 
-spring.datasource:
-  url: {{ .Data.horus_db_url }}
-  username: {{ .Data.horus_db_username }}
-  password: {{ .Data.horus_db_password }}
+spring:
+  datasource:
+    url: {{.Data.database_url}}
+    driver-class-name: org.postgresql.Driver
+    username: {{.Data.database_username}}
+    password: {{.Data.database_password}}
+  mail:
+    username: {{ .Data.smtp_username }}
+    password: {{ .Data.smtp_password }}
+    host: {{.Data.smtp_host}}
+    port: 587
+    properties:
+      mail:
+        smtp:
+          timeout: 3000
+          connectiontimeout: 5000
+          writetimeout: 5000
+  kafka:
+    bootstrap-servers: {{.Data.kafka_bootstrap_servers}}
+    producer:
+      acks: all
+      retries: 3
 
-eia:
-  url: {{ .Data.eia_url }}
+leadtime:
+  cal:
+    datasource:
+      us: true
+      sg: true
+      sf: true
+      au: false
 
+xxl:
+  job:
+    admin:
+      addresses: {{ .Data.xxl_job_admin_url }}
+    executor:
+      appname: ${spring.application.name}
+    register:
+      author: Castlery
+      alarmEmail: team.tech@castlery.com
+solidus:
+  url: {{.Data.solidus_url}}
+  token: {{.Data.solidus_token}}
 
+spring.redis:
+  database: {{ .Data.redis_database }}
+  host: {{ .Data.redis_host }}
+
+blackout:
+  periods:
+  {{ with .Data.blackout_periods}}
+    {{ range . }}
+      - location: {{ .location }}
+        startDate: {{ .start_date }}
+        endDate: {{ .end_date }}
+    {{ end }}
+  {{ end }}
+
+inventory:
+  report:
+    clean:
+      day: {{ .Data.inventory_report_retention_days }}
 {{ end }}

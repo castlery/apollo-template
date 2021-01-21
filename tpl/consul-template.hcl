@@ -21,12 +21,3 @@ template {
   perms  = 0644
   backup = true
 }
-
-template {
-  source      = "/Users/caipeijun/go/src/apollo-go/tpl/sentry.properties.tmpl"
-  destination = "/Users/caipeijun/go/src/apollo-go/tpl/sentry.properties"
-
-  error_on_missing_key = true
-  perms  = 0644
-  backup = true
-}
