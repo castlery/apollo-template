@@ -1,1 +1,1 @@
-[迁移指南](https://castlery.atlassian.net/wiki/spaces/TEC/pages/1678409729/apollo)
+[迁移指南] 参考内部Confluence 文档
