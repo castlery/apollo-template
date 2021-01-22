@@ -2,7 +2,7 @@ cache
 
 .idea/
 .agollo
-
+apollo-template
 
 # Binaries for programs and plugins
 *.exe

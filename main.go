@@ -2,14 +2,15 @@ package main
 
 import (
 	"flag"
-	"github.com/philchia/agollo/v4"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
 	"os"
 	"strings"
 	"sync"
 	"text/template"
+
+	"github.com/philchia/agollo/v4"
+	"gopkg.in/yaml.v2"
 )
 
 var apolloAddress string
@@ -73,7 +74,7 @@ func loadConfigFromApollo(app string, cluster string, namespaces string) map[str
 	})
 	configMap := map[string]interface{}{}
 	for _, ns := range namespaceArr {
-		if strings.HasSuffix(ns, ".yaml") {
+		if strings.HasSuffix(ns, ".yaml") || strings.HasSuffix(ns, ".yml") {
 			// yaml parse
 			content := agollo.GetString("content", agollo.WithNamespace(ns))
 			yaml.Unmarshal([]byte(content), configMap)

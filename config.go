@@ -2,22 +2,22 @@ package main
 
 import (
 	"errors"
-	"github.com/hashicorp/hcl"
 	"io/ioutil"
 	"log"
 	"os"
+
+	"github.com/hashicorp/hcl"
 )
 
 // Config is used to configure Consul Template
 type Config struct {
 	apollo_address string
-	// templateArr is the list of templates.
-	templateArr []TemplateConfig `mapstructure:"templateArr"`
+	templateArr    []TemplateConfig `mapstructure:"templateArr"`
 }
 
 type TemplateConfig struct {
-	Source      string
-	Destination string
+	Source       string
+	Destination  string
 	MissKeyError bool
 }
 
@@ -55,8 +55,8 @@ func Parse(s string) (*Config, error) {
 	var arr []TemplateConfig
 	for _, t := range parsed["template"].([]map[string]interface{}) {
 		config := TemplateConfig{
-			Source:      t["source"].(string),
-			Destination: t["destination"].(string),
+			Source:       t["source"].(string),
+			Destination:  t["destination"].(string),
 			MissKeyError: t["error_on_missing_key"].(bool),
 		}
 		arr = append(arr, config)
