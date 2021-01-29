@@ -46,6 +46,7 @@ func main() {
 		if templateConfig.MissKeyError {
 			t.Option("missingkey=error")
 		}
+		os.MkdirAll(templateConfig.Destination, os.ModePerm)
 		f, err := os.Create(templateConfig.Destination)
 		err = t.Execute(f, nil)
 		if err != nil {
