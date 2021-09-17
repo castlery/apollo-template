@@ -1,6 +1,6 @@
 module apollo-template
 
-go 1.15
+go 1.17
 
 require (
 	github.com/hashicorp/hcl v1.0.0

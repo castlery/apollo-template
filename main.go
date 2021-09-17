@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 	"text/template"
@@ -24,12 +25,14 @@ func main() {
 	flag.StringVar(&apollo, "apollo", "", "apollo config service 的地址")
 	flag.Parse()
 	if strings.EqualFold("", apollo) {
-		apolloAddress = os.Getenv("APOLLO_CONFIG_SERVICE_ADDRESS")
-		if strings.EqualFold("", apolloAddress) {
+		apolloAddressFromEnv := os.Getenv("APOLLO_CONFIG_SERVICE_ADDRESS")
+		if strings.EqualFold("", apolloAddressFromEnv) {
 			log.Fatal("apollo address must be set")
 		} else {
-			apollo = apolloAddress
+			apolloAddress = apolloAddressFromEnv
 		}
+	} else {
+		apolloAddress = apollo
 	}
 
 	// load templateArr config
@@ -46,8 +49,16 @@ func main() {
 		if templateConfig.MissKeyError {
 			t.Option("missingkey=error")
 		}
-		os.MkdirAll(templateConfig.Destination, os.ModePerm)
-		f, err := os.Create(templateConfig.Destination)
+		fileName := templateConfig.Destination
+		dirName := filepath.Dir(fileName)
+		err = os.MkdirAll(dirName, os.ModePerm)
+		if err != nil {
+			log.Fatal(err)
+		}
+		f, err := os.Create(fileName)
+		if err != nil {
+			log.Fatal(err)
+		}
 		err = t.Execute(f, nil)
 		if err != nil {
 			log.Fatalf("execution failed: %s", err)
